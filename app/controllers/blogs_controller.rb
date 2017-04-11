@@ -11,6 +11,7 @@ class BlogsController < ApplicationController
 
 	def create
 		@blog=Blog.new(blog_params)
+		@blog.user_id = current_user.id
 		@blog.save
 		redirect_to @blog
 	end
@@ -32,6 +33,12 @@ class BlogsController < ApplicationController
          render 'edit'
         end
     end 
+
+    def my_blog
+    	@blogs= Blog.where(:user_id => current_user.id)
+    end
+
+
 
     def destroy
         @blog = Blog.find(params[:id])
