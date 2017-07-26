@@ -4,7 +4,7 @@
   <tr>
     <th>Title</th>
     <th>Description</th>
-     <th>Image</th>
+     <!-- <th>Image</th> -->
       <th colspan="3"></th>
   </tr>
  
@@ -12,15 +12,48 @@
     <tr>
       <td><%= blog.title %></td>
       <td><%= blog.description %></td>
-      <td><%=image_tag blog.image %></td>
+      <!-- <td><%=image_tag blog.image %></td> -->
+       <td><%= link_to like_blog_path(blog),:class=> "btn btn-default" do %>
+                           <span class="glyphicon glyphicon-thumbs-up blog-up-<%=blog.id%>" style='width: 50px' >
+                           <%= blog.get_upvotes.count %>
+                           <% end %>
+                        </td>
+                        </span>
+                        <td><%= link_to  dislike_blog_path(blog), :class=> "btn btn-default" do %>
+                           <span class="glyphicon glyphicon-thumbs-down blog-down-<%=blog.id%>" style='width: 50px'>
+                           <%= blog.get_downvotes.count %>
+                           <% end %>
+                                
+                                <%#byebug%>
+                            <%#if current_user != blog%> 
+                           <%#if current_user.following?(blog)%>
+                              
+                               
+                              <% if (params[:follower_id] == params[:id]) && (params[:followable_id] == current_user.id)%>
+                              <%# if  (params[:follower_id] == params[:id]) && (params[:follower_type] == "user")%>
+                               
+                             <%= link_to(unfollow_blog_path(blog), :class => "btn btn-primary") do %> 
+                                 <span class="icon-remove"></span> 
+                                 Un-Follow 
+
+                               <% end %> 
+                              <%else%> 
+                          <%= link_to(follow_blog_path(blog), :class => 'btn btn-primary') do %> 
+                                  <span class="icon-ok icon-white"></span> 
+                                  Follow 
+                                  <%end%> 
+                          <%end%> 
+                          <%#end%>
+
+
       <td><%= link_to 'Show', blog_path(blog) %></td>
-      <% if current_user.id == blog.user_id %>
+      <%# if current_user.id == blog.user_id %>
 
       <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
       <td><%= link_to 'Destroy', blog_path(blog),method: :delete,
       data: { confirm: 'Are you sure?' } %></td>
     </tr>
-    <% end %>
+    <%# end %>
   <% end %>
 </table>
 <%= link_to 'New blog', new_blog_path %>
