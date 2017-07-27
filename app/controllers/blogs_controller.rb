@@ -1,7 +1,7 @@
 class BlogsController < ApplicationController
-	 before_action :authenticate_user!
+	before_action :authenticate_user!
 	def index
-       @blogs=Blog.all
+  @blogs=Blog.all
 
 	end
 
@@ -19,35 +19,39 @@ class BlogsController < ApplicationController
 
 	def show
 		@blog=Blog.find(params[:id])
-    end
+  end
       
   def friend
-      if Friendship.where(sender: current_user.id,receiver: params[:id], accept: false).first.present?
-          flash[:notice] = "you have already sent the friend  request to this user"
 
+    if Friendship.where(sender: current_user.id,receiver: params[:id], accept: false).first.present?
+      flash[:notice] = "you have already sent the friend  request to this user"
+        
       elsif Friendship.where(sender: current_user.id,receiver: params[:id], accept: true).first.present?
        
-            flash[:notice] = "You are already friend of this user"  
-        else
-            Friendship.create(sender: current_user.id,receiver: params[:id], accept: false )
-            flash[:notice] = "freind request sent"  
-        end
-  
-   redirect_to blog_profile_path(id: current_user.id)
-end
+      flash[:notice] = "You are already friend of this user"  
+      else
 
-def accept_friend
-  @abc=Friendship.where(receiver: params[:re] ,sender: params[:se]).first
-  @abc.update(accept: true)
-      flash[:notice] = "Now you are friend with #{User.where(id: params[:se]).first.email}"
+      Friendship.create(sender: current_user.id,receiver: params[:id], accept: false )
+      flash[:notice] = "freind request sent"  
+    end
+  
     redirect_to blog_profile_path(id: current_user.id)
-end
-def delete_friend
-  @abc=Friendship.where(receiver: params[:re] ,sender: params[:se]).first
-  @abc.destroy
+  end
+
+  def accept_friend
+
+   @abc=Friendship.where(receiver: params[:re] ,sender: params[:se]).first
+   @abc.update(accept: true)
+    flash[:notice] = "Now you are friend with #{User.where(id: params[:se]).first.email}"
+    redirect_to blog_profile_path(id: current_user.id)
+  end
+ def delete_friend
+
+   @abc=Friendship.where(receiver: params[:re] ,sender: params[:se]).first
+   @abc.destroy
    flash[:notice] = "request deleted"
-  redirect_to blog_profile_path(id: current_user.id)
-end
+   redirect_to blog_profile_path(id: current_user.id)
+  end
   # def notification
 
   #  @likenotifications= Notification.where(recipient_id: current_user.id,notifiable_for: "like")
@@ -57,22 +61,20 @@ end
 
   # GET /users/:id.:format
   def profile
-
+    
    if Friendship.where(receiver: current_user.id).first.present?
       @friend_request=Friendship.where(receiver: current_user.id)
     end 
 
-     @user = User.all.where.not(id: current_user)
+    @user = User.all.where.not(id: current_user)
     
-      
-
+  
     if Friendship.where(receiver: current_user.id).first.present? || Friendship.where(sender: current_user.id).first.present?
 
       @friends = Friendship.where(receiver: current_user.id)
     
-       @friends1 = Friendship.where(sender: current_user.id)
+      @friends1 = Friendship.where(sender: current_user.id)
     end
-
   end
 
 
@@ -82,7 +84,6 @@ end
    @blog.upvote_by current_user
    
     redirect_to :back 
-
   end
 
   def downvote
@@ -90,9 +91,9 @@ end
    @blog.downvote_by current_user
    
     redirect_to :back 
- end
+  end
 
- def follow
+  def follow
 
    # if Follow.where(follower_id: params[:id], follower_type: "User",followable_id: params[:id],followable_type: "ApplicationRecord").first.present? 
     @follow= Follow.create(follower_id: params[:id], followable_id: current_user.id,follower_type: "User",followable_type: "ApplicationRecord") 
@@ -100,7 +101,7 @@ end
     redirect_to :back 
   end 
 
- def unfollow 
+  def unfollow 
    
    #if Follow.where(follower_id: params[:id], follower_type: "User").first.present?
     @unfoll = Follow.where(follower_id: params[:id], follower_type: "User",followable_id: current_user.id).first
@@ -109,7 +110,7 @@ end
     #end
   
     redirect_to :back 
- end
+  end
 
   def edit
     @blog = Blog.find(params[:id])
@@ -122,7 +123,7 @@ end
       redirect_to @blog
       else
       render 'edit'
-     end
+    end
   end 
 
   def my_blog
