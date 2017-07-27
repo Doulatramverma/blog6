@@ -39,7 +39,7 @@ end
 def accept_friend
   @abc=Friendship.where(receiver: params[:re] ,sender: params[:se]).first
   @abc.update(accept: true)
-      flash[:notice] = "Now you are friend with #{User.where(id: params[:se]).first.name}"
+      flash[:notice] = "Now you are friend with #{User.where(id: params[:se]).first.email}"
     redirect_to blog_profile_path(id: current_user.id)
 end
 def delete_friend
@@ -62,7 +62,7 @@ end
       @friend_request=Friendship.where(receiver: current_user.id)
     end 
 
-     @blog = Blog.all.where.not(id: current_user)
+     @user = User.all.where.not(id: current_user)
     
       
 
