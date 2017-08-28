@@ -1,9 +1,17 @@
 Rails.application.routes.draw do
   
   devise_for :users
-  resources :blogs
+  resources :blogs do
+     resources :comments do
+      resources :replies
+    end
+  end
+  #root  'comments#index'
+  # resources :comments, only: [:index, :create]
+  # get '/comments/new/(:parent_id)', to: 'comments#new', as: :new_comment
   
-  root 'blogs#index'
+  
+ root 'blogs#index'
   get '/my_blogs' =>"blogs#my_blogs"
 
   get 'blog/profile' => 'blogs#profile'

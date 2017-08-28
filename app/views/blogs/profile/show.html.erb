@@ -3,13 +3,13 @@
 <div id="demo1" class="collapse">
       <% if @friends !=nil %>
           <%  @friends.each do |friend| %>
-           <%= blog.where(id: friend.sender).email %>
+           <%= User.where(id: friend.sender).first.email %>
           <% end %>
       <% end %>
 
       <%if @friends1 !=nil%>
             <%  @friends1.each do |friend| %>
-             <%= blog.where(id: friend.receiver).email %>
+             <%= User.where(id: friend.receiver).first.email %>
             <% end %>
       <% end %>
 </div>
@@ -19,11 +19,11 @@
 <div class="container">
 <div id="demo" class="collapse">
   
-<% @blogs.each do |blog| %>
+<% @user.each do |user| %>
   <p>
   
-    <%= blog.name %>
-    <%= link_to "Add Friend", blog_addfriend_path(id: blog.id) %>
+    <%= user.email %>
+    <%= link_to "Add Friend", user_addfriend_path(id: blog.id) %>
   </p>
  
 <% end %>
@@ -32,11 +32,11 @@
 <%  @friend_request.each do |frr| %>
   <p>
      <%unless frr.accept==true&&frr !=nil%>
-     <%@blogrr=blog.where(id: frr.sender).first%>
-    <%= "u have a friend request from #{@blogrr.name }" %>
-    <%= link_to "accept", user_acc_path(re: current_user.id,se: @blogrr.id) %>
+     <%@userr=blog.where(id: frr.sender).first%>
+    <%= "u have a friend request from #{@userr.email }" %>
+    <%= link_to "accept", user_acc_path(re: current_user.id,se: @userr.id) %>
     
-  <%= link_to "delete", user_de_path(re: current_user.id,se: @blogrr.id) %>
+  <%= link_to "delete", user_de_path(re: current_user.id,se: @userr.id) %>
     <%end%>
   </p>
  

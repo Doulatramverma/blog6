@@ -1,4 +1,4 @@
-
+ <div class="col-md-6">
  <p>
   <strong>Title:</strong>
   <%= @blog.title %>
@@ -12,6 +12,18 @@
   <strong>Image:</strong>
   <%= image_tag @blog.image %>
 </p>
+<%#= render @comments %>
+<%#= comments_tree_for @comments %>
+ </div>
+<div class="col-md-6">
+  <h2>Comments</h2>
+<%= render @blog.comments %>
+ 
+<h2>Add a comment:</h2>
+<%= render 'comments/form' %>
+ </div>
+
 <%= link_to 'Edit', edit_blog_path(@blog) %> |
 <%= link_to 'Back', blogs_path %>
 
+<br><br><br><br><br><br>
